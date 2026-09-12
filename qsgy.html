@@ -1,0 +1,235 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寝室公约</title>
+    <link rel="icon" href="https://raw.githubusercontent.com/TuringNeal/turingneal-website/refs/heads/main/icon.ico">
+    <style>
+        /* ===== CSS 变量 – 亮色主题 ===== */
+        :root {
+            --bg: #f7f8fa;
+            --card-bg: #ffffff;
+            --card-border: #eaeef2;
+            --text-primary: #1d2a3a;
+            --text-secondary: #3e4e5e;
+            --text-muted: #8e9eae;
+            --btn-border: #d0d8e0;
+            --btn-color: #3e4e5e;
+            --btn-hover-bg: #f0f3f6;
+            --item-border: #eef2f6;
+        }
+
+        /* ===== 暗色主题 ===== */
+        [data-theme="dark"] {
+            --bg: #1a1e26;
+            --card-bg: #242a34;
+            --card-border: #313842;
+            --text-primary: #e6edf5;
+            --text-secondary: #b0c0d0;
+            --text-muted: #7a8a9a;
+            --btn-border: #4a5a6a;
+            --btn-color: #b0c0d0;
+            --btn-hover-bg: #2d3540;
+            --item-border: #2d3540;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            padding: 24px;
+            transition: background 0.25s ease;
+        }
+
+        .card {
+            max-width: 560px;
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 40px 36px 36px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--card-border);
+            transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        /* ===== 头部：仅切换按钮 ===== */
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 28px;
+        }
+
+        .theme-toggle button {
+            background: transparent;
+            border: 1px solid var(--btn-border);
+            border-radius: 100px;
+            padding: 5px 18px;
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--btn-color);
+            cursor: pointer;
+            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+            font-family: inherit;
+            letter-spacing: 0.3px;
+            user-select: none;
+        }
+
+        .theme-toggle button:hover {
+            background: var(--btn-hover-bg);
+            border-color: var(--text-muted);
+        }
+
+        .theme-toggle button:focus-visible {
+            outline: 2px solid var(--text-secondary);
+            outline-offset: 2px;
+        }
+
+        /* ===== 公约内容 ===== */
+        .title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-align: center;
+            margin-bottom: 28px;
+            letter-spacing: 0.5px;
+            transition: color 0.25s ease;
+        }
+
+        .rules {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .rule-item {
+            display: flex;
+            padding: 12px 4px;
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--item-border);
+            transition: color 0.25s ease, border-color 0.25s ease;
+        }
+
+        .rule-item:last-child {
+            border-bottom: none;
+        }
+
+        .rule-item .num {
+            flex: 0 0 32px;
+            font-weight: 500;
+            color: var(--text-primary);
+            transition: color 0.25s ease;
+        }
+
+        /* ===== 底部 ===== */
+        .footer-note {
+            margin-top: 32px;
+            font-size: 13px;
+            color: var(--text-muted);
+            text-align: center;
+            border-top: 1px solid var(--card-border);
+            padding-top: 20px;
+            transition: color 0.25s ease, border-color 0.25s ease;
+        }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 480px) {
+            .card {
+                padding: 28px 20px 24px;
+            }
+            .title {
+                font-size: 20px;
+            }
+            .rule-item {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+
+        <!-- 头部：仅切换按钮 -->
+        <div class="header">
+            <div class="theme-toggle">
+                <button id="theme-switch" aria-label="切换亮色/暗色模式">亮色</button>
+            </div>
+        </div>
+
+        <!-- 公约内容 -->
+        <div class="title">253寝室公约</div>
+
+        <div class="rules">
+            <div class="rule-item"><span class="num">1.</span><span>按时就寝</span></div>
+            <div class="rule-item"><span class="num">2.</span><span>讲究卫生</span></div>
+            <div class="rule-item"><span class="num">3.</span><span>上床即静</span></div>
+            <div class="rule-item"><span class="num">4.</span><span>违者一天卫生</span></div>
+        </div>
+
+        <!-- 底部版权 -->
+        <div class="footer-note">
+            <span>© 2026 吴邦豪</span>
+        </div>
+
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            const root = document.documentElement;
+            const switchBtn = document.getElementById('theme-switch');
+
+            function getCurrentTheme() {
+                return root.getAttribute('data-theme') || 'light';
+            }
+
+            function applyTheme(theme) {
+                if (theme === 'dark') {
+                    root.setAttribute('data-theme', 'dark');
+                    switchBtn.textContent = '暗色';
+                } else {
+                    root.removeAttribute('data-theme');
+                    switchBtn.textContent = '亮色';
+                }
+                localStorage.setItem('theme', theme);
+            }
+
+            function toggleTheme() {
+                const current = getCurrentTheme();
+                const next = (current === 'light') ? 'dark' : 'light';
+                applyTheme(next);
+            }
+
+            function init() {
+                const stored = localStorage.getItem('theme');
+                let theme = 'light';
+                if (stored === 'dark' || stored === 'light') {
+                    theme = stored;
+                }
+                applyTheme(theme);
+                switchBtn.addEventListener('click', toggleTheme);
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+
+        })();
+    </script>
+
+</body>
+</html>

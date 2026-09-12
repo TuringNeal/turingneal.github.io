@@ -1,0 +1,451 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TuringNeal</title>
+    <link rel="icon" href="https://raw.githubusercontent.com/TuringNeal/turingneal-website/refs/heads/main/icon.ico">
+    <style>
+        /* ===== CSS 变量 – 亮色主题 ===== */
+        :root {
+            --bg: #f7f8fa;
+            --card-bg: #ffffff;
+            --card-border: #eaeef2;
+            --text-primary: #1d2a3a;
+            --text-secondary: #3e4e5e;
+            --text-muted: #8e9eae;
+            --btn-border: #d0d8e0;
+            --btn-color: #3e4e5e;
+            --btn-hover-bg: #f0f3f6;
+            --link-color: #5a6a7a;
+            --item-border: #eef2f6;
+            --item-bg: #fafbfc;
+            --item-hover-bg: #f0f3f6;
+            --avatar-border: #eaeef2;
+        }
+
+        /* ===== 暗色主题 ===== */
+        [data-theme="dark"] {
+            --bg: #1a1e26;
+            --card-bg: #242a34;
+            --card-border: #313842;
+            --text-primary: #e6edf5;
+            --text-secondary: #b0c0d0;
+            --text-muted: #7a8a9a;
+            --btn-border: #4a5a6a;
+            --btn-color: #b0c0d0;
+            --btn-hover-bg: #2d3540;
+            --link-color: #8a9aaa;
+            --item-border: #2d3540;
+            --item-bg: #1f2630;
+            --item-hover-bg: #2d3540;
+            --avatar-border: #313842;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            padding: 24px;
+            transition: background 0.25s ease;
+        }
+
+        .card {
+            max-width: 560px;
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 36px 32px 32px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--card-border);
+            transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        /* ===== 头部：主题切换 ===== */
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 12px;
+        }
+
+        .theme-toggle button {
+            background: transparent;
+            border: 1px solid var(--btn-border);
+            border-radius: 100px;
+            padding: 5px 18px;
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--btn-color);
+            cursor: pointer;
+            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+            font-family: inherit;
+            letter-spacing: 0.3px;
+            user-select: none;
+        }
+
+        .theme-toggle button:hover {
+            background: var(--btn-hover-bg);
+            border-color: var(--text-muted);
+        }
+
+        .theme-toggle button:focus-visible {
+            outline: 2px solid var(--text-secondary);
+            outline-offset: 2px;
+        }
+
+        /* ===== 个人信息（无介绍） ===== */
+        .profile {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .avatar {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--avatar-border);
+            margin-bottom: 16px;
+            transition: border-color 0.25s ease;
+            background: var(--item-bg);
+        }
+
+        .name {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.2px;
+            transition: color 0.25s ease;
+        }
+
+        /* ===== 链接列表 ===== */
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .link-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 18px;
+            background: var(--item-bg);
+            border: 1px solid var(--item-border);
+            border-radius: 12px;
+            text-decoration: none;
+            transition: background 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+            cursor: pointer;
+        }
+
+        .link-item:hover {
+            background: var(--item-hover-bg);
+            border-color: var(--text-muted);
+        }
+
+        .link-item:active {
+            transform: scale(0.99);
+        }
+
+        .link-item .link-title {
+            flex: 1;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-primary);
+            transition: color 0.25s ease;
+        }
+
+        .link-item .link-icon {
+            flex: 0 0 auto;
+            width: 18px;
+            height: 18px;
+            color: var(--text-muted);
+            transition: color 0.25s ease;
+        }
+
+        /* ===== 底部 ===== */
+        .footer-note {
+            margin-top: 28px;
+            font-size: 13px;
+            color: var(--text-muted);
+            text-align: center;
+            border-top: 1px solid var(--card-border);
+            padding-top: 20px;
+            transition: color 0.25s ease, border-color 0.25s ease;
+        }
+
+        /* ===== 复制提示 ===== */
+        .toast {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--text-primary);
+            color: var(--card-bg);
+            font-size: 14px;
+            padding: 8px 20px;
+            border-radius: 100px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            font-family: inherit;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 480px) {
+            .card {
+                padding: 28px 20px 24px;
+            }
+            .avatar {
+                width: 80px;
+                height: 80px;
+            }
+            .name {
+                font-size: 21px;
+            }
+            .link-item {
+                padding: 12px 16px;
+            }
+            .link-item .link-title {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+
+        <!-- 头部：主题切换 -->
+        <div class="header">
+            <div class="theme-toggle">
+                <button id="theme-switch" aria-label="切换亮色/暗色模式">亮色</button>
+            </div>
+        </div>
+
+        <!-- 个人信息（仅头像和姓名） -->
+        <div class="profile">
+            <img class="avatar" src="https://vss10.vlinkx.cn/avatar/turingneal_-VSn29V_Xn.jpg?imageView2/1/w/300/h/300" alt="TuringNeal 的头像">
+            <div class="name">网址导航</div>
+        </div>
+
+        <!-- 链接列表 -->
+        <div class="links">
+
+            <!-- 我的网站 -->
+            <a class="link-item" href="https://turingneal.github.io" target="_blank" rel="noopener">
+                <span class="link-title">返回主页</span>
+                <svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+            </a>
+
+            <!-- 关于本站 -->
+            <a class="link-item" href="https://turingneal.github.io/about" target="_blank" rel="noopener">
+                <span class="link-title">关于本站</span>
+                <svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+            </a>
+
+            <!-- 我的 GitHub 主页 -->
+            <a class="link-item" href="https://www.github.com/TuringNeal" target="_blank" rel="noopener">
+                <span class="link-title">我的 GitHub 主页</span>
+                <svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+            </a>
+
+            <!-- 我的 QQ 空间 -->
+            <a class="link-item" href="https://user.qzone.qq.com/3752113809/main" target="_blank" rel="noopener">
+                <span class="link-title">我的 QQ 空间</span>
+                <svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+            </a>
+
+           <!-- 我的B站主页 -->
+            <a class="link-item" href="https://space.bilibili.com/1448356785" target="_blank" rel="noopener">
+                <span class="link-title">我的B站主页</span>
+                <svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+            </a>
+
+            <!-- 我的资源 -->
+            <a class="link-item" href="https://1853228778.share.123pan.cn/123pan/lPyFvd-xQRK3" target="_blank" rel="noopener">
+                <span class="link-title">我的资源</span>
+                <svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+            </a>
+
+            <!-- 我的邮箱（复制） -->
+            <div class="link-item" data-copy="3752113809@qq.com" role="button" tabindex="0">
+                <span class="link-title">我的邮箱</span>
+                <svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+            </div>
+
+            <!-- 我的 QQ 号（复制） -->
+            <div class="link-item" data-copy="3752113809" role="button" tabindex="0">
+                <span class="link-title">我的 QQ 号</span>
+                <svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+            </div>
+
+        </div>
+
+        <!-- 底部 -->
+        <div class="footer-note">
+            <span>© 2026 TuringNeal</span>
+        </div>
+
+    </div>
+
+    <!-- 复制提示 -->
+    <div class="toast" id="toast">已复制</div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            /* ===== 主题切换 ===== */
+            const root = document.documentElement;
+            const switchBtn = document.getElementById('theme-switch');
+
+            function getCurrentTheme() {
+                return root.getAttribute('data-theme') || 'light';
+            }
+
+            function applyTheme(theme) {
+                if (theme === 'dark') {
+                    root.setAttribute('data-theme', 'dark');
+                    switchBtn.textContent = '暗色';
+                } else {
+                    root.removeAttribute('data-theme');
+                    switchBtn.textContent = '亮色';
+                }
+                localStorage.setItem('theme', theme);
+            }
+
+            function toggleTheme() {
+                const current = getCurrentTheme();
+                const next = (current === 'light') ? 'dark' : 'light';
+                applyTheme(next);
+            }
+
+            function initTheme() {
+                const stored = localStorage.getItem('theme');
+                let theme = 'light';
+                if (stored === 'dark' || stored === 'light') {
+                    theme = stored;
+                }
+                applyTheme(theme);
+                switchBtn.addEventListener('click', toggleTheme);
+            }
+
+            /* ===== 复制功能 ===== */
+            const toast = document.getElementById('toast');
+            let toastTimer = null;
+
+            function showToast(text) {
+                toast.textContent = text || '已复制';
+                toast.classList.add('show');
+                if (toastTimer) clearTimeout(toastTimer);
+                toastTimer = setTimeout(function() {
+                    toast.classList.remove('show');
+                }, 1800);
+            }
+
+            function copyText(text) {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(function() {
+                        showToast('已复制：' + text);
+                    }).catch(function() {
+                        fallbackCopy(text);
+                    });
+                } else {
+                    fallbackCopy(text);
+                }
+            }
+
+            function fallbackCopy(text) {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast('已复制：' + text);
+                } catch (err) {
+                    showToast('复制失败');
+                }
+                document.body.removeChild(textarea);
+            }
+
+            function initCopy() {
+                const copyItems = document.querySelectorAll('[data-copy]');
+                copyItems.forEach(function(item) {
+                    item.addEventListener('click', function() {
+                        const text = item.getAttribute('data-copy');
+                        copyText(text);
+                    });
+                    item.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            const text = item.getAttribute('data-copy');
+                            copyText(text);
+                        }
+                    });
+                });
+            }
+
+            /* ===== 初始化 ===== */
+            function init() {
+                initTheme();
+                initCopy();
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+
+        })();
+    </script>
+
+</body>
+</html>
